@@ -22,10 +22,10 @@ def parse_arg_verses(s):
     return verses
 
 
-arg_book = 'John'
-arg_chpt = '1'
+arg_book = ''
+arg_chpt = ''
 arg_verses = ''
-arg_version = "zh_cuv"
+arg_version = 'zh_cuv'
 
 arg_list = sys.argv[1:]
 unix_options = "b:c:v:u:"
@@ -50,11 +50,6 @@ for k, v in arguments:
 
 verse_num_list = parse_arg_verses(arg_verses)
 
-# pprint(verse_num_list)
-
-print("Book of %s chapter %s (%s)" %
-      (arg_book, arg_chpt, arg_version))
-
 src_path = "/Users/honzungchang/GitRepo/bible/json/"
 
 filename = src_path + arg_version + '.json'
@@ -63,6 +58,15 @@ with open('./book_abbrevs.json') as f:
     book_abbrevs = json.load(f)
 with open('./book_names.json') as f:
     book_names = json.load(f)
+
+if arg_book == '':
+    print(
+        "Usage: bible --book=name [--chapter=1] [--verses=1,2,7,8-20] [--version=zh_cuv]")
+    print("Please select a book:")
+    for i, book in enumerate(book_names):
+        sys.stdout.write(book + ' (' + book_abbrevs[i] + ')' + ' | ')
+    print()
+    sys.exit(0)
 
 
 def main():
@@ -88,6 +92,14 @@ def main():
 
     book = bible[ind]  # keys: abbrev, chapters, name
     chapters = book['chapters']
+
+    if arg_chpt == '':
+        print("Please select a chapter (1 to %s)" % len(chapters))
+        return
+
+    selected_book_name = book_names[ind]
+    print("Book of %s chapter %s (%s)" %
+          (selected_book_name, arg_chpt, arg_version))
 
     n_chapter = int(arg_chpt) - 1
 
