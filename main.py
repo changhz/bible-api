@@ -24,7 +24,7 @@ def parse_arg_verses(s):
 
 arg_book = 'John'
 arg_chpt = '1'
-arg_verses = '1-7'
+arg_verses = ''
 arg_version = "zh_cuv"
 
 arg_list = sys.argv[1:]
@@ -52,8 +52,8 @@ verse_num_list = parse_arg_verses(arg_verses)
 
 # pprint(verse_num_list)
 
-print("Book %s chapter %s verse(s) %s in version %s" %
-      (arg_book, arg_chpt, arg_verses, arg_version))
+print("Book of %s chapter %s (%s)" %
+      (arg_book, arg_chpt, arg_version))
 
 src_path = "/Users/honzungchang/GitRepo/bible/json/"
 
@@ -96,9 +96,13 @@ def main():
         return
 
     verses = chapters[n_chapter]
-    for n in verse_num_list:
-        if n-1 <= len(verses):
-            print("%s\t%s" % (n, verses[n - 1]))
+    if len(verse_num_list) == 0:
+        for n, s in enumerate(verses):
+            print("%s\t%s" % (n, s))
+    else:
+        for n in verse_num_list:
+            if n-1 >= 0 and n-1 <= len(verses):
+                print("%s\t%s" % (n, verses[n - 1]))
     return
 
 
