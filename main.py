@@ -19,10 +19,12 @@ def parse_arg_verses(s):
             verses.append(int(x))
         else:
             x = x.split('-')
-            x = [int(n) for n in x if n.isdigit()]
-            if len(x) > 0:
+            if x[0].isdigit() and x[1].isdigit():
+                x = [int(n) for n in x]
                 for n in range(x[0], x[1] + 1):
                     verses.append(n)
+            elif x[0].isdigit() and not x[1].isdigit():
+                verses.append(int(x[0]))
     return verses
 
 
