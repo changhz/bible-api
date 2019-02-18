@@ -56,10 +56,11 @@ with open(dir_path + '/book_names.json') as f:
 
 if arg_book == '':
     print(
-        "Usage: bible --book=name [--chapter=1[:1,2,7,8-20]] [--version=zh_cuv]")
+        "Usage: bible --book='John' [--chapter=1[:1,2,7,8-20]] [--version=zh_cuv]")
     print("Please select a book:")
     for i, book in enumerate(book_names):
-        sys.stdout.write(book + ' (' + book_abbrevs[i] + ')' + ' | ')
+        # sys.stdout.write(book + ' (' + book_abbrevs[i] + ')' + ' | ')
+        print(str(i+1) + ' ------- ' + book + ' (' + book_abbrevs[i] + ')')
     print()
     sys.exit(0)
 
