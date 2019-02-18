@@ -26,13 +26,22 @@ def parse_arg_verses(s):
     return verses
 
 
+def print_verse(n, s, l):
+    if l == 0:
+        sys.stdout.write("[%s] %s" % (n, s))
+    else:
+        print("[%s] %s" % (n, s))
+        print()
+
+
+arg_l = 0
 arg_book = ''
 arg_chpt = ''
 arg_version = 'zh_cuv'
 
 arg_list = sys.argv[1:]
-unix_options = "b:c:v:"
-gnu_options = ["book=", "chapter=", "version="]
+unix_options = "lb:c:v:"
+gnu_options = ["list", "book=", "chapter=", "version="]
 
 try:
     arguments, values = getopt(arg_list, unix_options, gnu_options)
@@ -42,6 +51,8 @@ except error as err:
     sys.exit(2)
 
 for k, v in arguments:
+    if k in ('-l', '--list'):
+        arg_l = 1
     if k in ('-b', '--book'):
         arg_book = v
     elif k in ('-c', '--chapter'):
@@ -102,6 +113,7 @@ if len(chpt) > 1:
 selected_book_name = book_names[ind]
 print("Book of %s chapter %s (%s)" %
       (selected_book_name, chpt[0], arg_version))
+print()
 
 n_chapter = int(chpt[0]) - 1
 
@@ -112,11 +124,13 @@ if n_chapter < 0 or n_chapter > len(chapters):
 verses = chapters[n_chapter]
 if len(verse_num_list) == 0:
     for n, s in enumerate(verses):
-        print("%s\t%s" % (n+1, s))
+        print_verse(n+1, s, arg_l)
+    print()
 else:
     for n in verse_num_list:
         if n-1 >= 0 and n-1 < len(verses):
-            print("%s\t%s" % (n, verses[n - 1]))
+            print_verse(n, verses[n-1], arg_l)
+    print()
 
 
 if __name__ == "__main__":
