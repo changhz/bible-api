@@ -114,7 +114,7 @@ if len(verse_num_list) == 0:
         print("%s\t%s" % (n+1, s))
 else:
     for n in verse_num_list:
-        if n-1 >= 0 and n-1 <= len(verses):
+        if n-1 >= 0 and n-1 < len(verses):
             print("%s\t%s" % (n, verses[n - 1]))
 
 
