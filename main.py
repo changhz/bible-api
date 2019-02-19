@@ -123,6 +123,10 @@ selected_book_name = book_names[ind]
 #       (selected_book_name, arg_version, chpt[0]))
 # print()
 
+if not chpt[0].isdigit():
+    print("Error: invalid chapter")
+    sys.exit(1)
+
 n_chapter = int(chpt[0]) - 1
 
 if n_chapter < 0 or n_chapter > len(chapters):
