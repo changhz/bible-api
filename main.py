@@ -37,28 +37,32 @@ def print_verse(n, s, l):
 
 
 arg_l = 0
+arg_b = 0
 arg_book = ''
 arg_chpt = ''
 arg_version = 'zh_cuv'
 
 arg_list = sys.argv[1:]
-unix_options = "lb:c:v:"
-gnu_options = ["list", "book=", "chapter=", "version="]
+unix_options = "lbv:"
+gnu_options = ["list", "books", "version="]
 
 try:
     arguments, values = getopt(arg_list, unix_options, gnu_options)
+
+    if len(values) > 0:
+        arg_book = values[0]
+    if len(values) > 1:
+        arg_chpt = values[1]
+
 except error as err:
-    # output error, and return with an error code
     print(str(err))
     sys.exit(2)
 
 for k, v in arguments:
     if k in ('-l', '--list'):
         arg_l = 1
-    if k in ('-b', '--book'):
-        arg_book = v
-    elif k in ('-c', '--chapter'):
-        arg_chpt = v
+    if k in ('-b', '--books'):
+        arg_b = 1
     elif k in ('-v', '--version'):
         arg_version = v
 
@@ -67,14 +71,16 @@ with open(dir_path + '/book_abbrevs.json') as f:
 with open(dir_path + '/book_names.json') as f:
     book_names = json.load(f)
 
-if arg_book == '':
-    print(
-        "Usage: bible --book='John' [--chapter=1[:1,2,7,8-20]] [--version=zh_cuv]")
-    print("Please select a book:")
+if arg_b == 1:
     for i, book in enumerate(book_names):
         # sys.stdout.write(book + ' (' + book_abbrevs[i] + ')' + ' | ')
         print(str(i+1) + ' ------- ' + book + ' (' + book_abbrevs[i] + ')')
     print()
+    sys.exit(0)
+
+if arg_book == '':
+    print(
+        "Usage: bible [--list] [--books] [-v version] book chapter:verses")
     sys.exit(0)
 
 src_path = dir_path + "/_data"
@@ -113,9 +119,9 @@ if len(chpt) > 1:
     verse_num_list = parse_arg_verses(chpt[1])
 
 selected_book_name = book_names[ind]
-print("Book of %s chapter %s (%s)" %
-      (selected_book_name, chpt[0], arg_version))
-print()
+# print("Book of %s (%s)\nChapter %s" %
+#       (selected_book_name, arg_version, chpt[0]))
+# print()
 
 n_chapter = int(chpt[0]) - 1
 
