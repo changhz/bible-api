@@ -40,7 +40,7 @@ arg_l = 0
 arg_b = 0
 arg_book = ''
 arg_chpt = ''
-arg_version = 'zh_cuv'
+arg_v = 'en_kjv'
 
 arg_list = sys.argv[1:]
 unix_options = "lbv:"
@@ -64,7 +64,7 @@ for k, v in arguments:
     if k in ('-b', '--books'):
         arg_b = 1
     elif k in ('-v', '--version'):
-        arg_version = v
+        arg_v = v
 
 with open(dir_path + '/book_abbrevs.json') as f:
     book_abbrevs = json.load(f)
@@ -85,12 +85,12 @@ if arg_book == '':
 
 src_path = dir_path + "/_data"
 
-filename = src_path + '/' + arg_version + '.json'
+filename = src_path + '/' + arg_v + '.json'
 
 try:
     c = codecs.open(filename, 'r', 'utf-8-sig')
 except:
-    print("Error: no such version '%s'" % arg_version)
+    print("Error: no such version '%s'" % arg_v)
     sys.exit(2)
 
 bible = json.load(c)
@@ -120,7 +120,7 @@ if len(chpt) > 1:
 
 selected_book_name = book_names[ind]
 # print("Book of %s (%s)\nChapter %s" %
-#       (selected_book_name, arg_version, chpt[0]))
+#       (selected_book_name, arg_v, chpt[0]))
 # print()
 
 if not chpt[0].isdigit():
